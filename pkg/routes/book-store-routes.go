@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/sochoav1/Go-BookStorageMySQL/pkg/controllers"
+	"github.com/sochoav1/Go-BookStorageMySQL"
 )
 
 var RegisterBookStoreRoutes = func(router *mux.Router) {

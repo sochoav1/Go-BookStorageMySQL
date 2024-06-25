@@ -2,9 +2,10 @@ package config
 
 import (
 	"fmt"
-
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/joho/godotenv"
+	"os"
 )
 
 var (
@@ -12,7 +13,21 @@ var (
 )
 
 func Connect() {
-	dsn := "sochoav8a:PrintPassword321_@tcp(127.0.0.1:3306)/simplerest?charset=utf8&parseTime=True&loc=Local"
+	// Carga las variables de entorno desde el archivo .env
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
+
+	// Obtiene las variables de entorno
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	name := os.Getenv("DB_NAME")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+
+	// Construye la cadena de conexión DSN
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", user, password, host, port, name)
 	database, err := gorm.Open("mysql", dsn)
 	if err != nil {
 		fmt.Println("Failed to connect to database:", err)
@@ -20,8 +35,4 @@ func Connect() {
 	}
 
 	DB = database
-}
-
-func GetDb() *gorm.DB {
-	return DB
 }
